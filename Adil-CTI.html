@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Threat Intelligence</title>
+    <style>
+        body {
+            background-image: url('background.jpg'); /* Background image URL */
+            background-size: cover;
+            color: #ffffff; /* Text color */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent header background */
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #FFD700; /* Gold color for subheadings */
+        }
+
+        button {
+            background-color: #007BFF; /* Bootstrap primary color */
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            padding: 15px 30px;
+            margin: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Darker shade on hover */
+        }
+
+        .form-section {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent form section */
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 10px;
+            width: 80%; /* Responsive width */
+            max-width: 600px; /* Max width */
+        }
+
+        textarea {
+            width: 100%; /* Full width */
+            height: 100px; /* Fixed height */
+            border-radius: 5px;
+            padding: 10px;
+            border: none;
+        }
+
+        textarea:focus {
+            outline: none; /* Remove outline on focus */
+            border: 2px solid #FFD700; /* Gold border on focus */
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #ddd; /* Lighter text color for footer */
+        }
+    </style>
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.form-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <img src="banner.png" alt="Cyber Threat Intelligence Banner" style="width:100%; max-height: 200px; object-fit: cover;"> <!-- Banner image -->
+    </header>
+
+    <h1>Cyber Threat Intelligence Dashboard</h1>
+
+    <!-- Buttons for different tasks -->
+    <button onclick="showSection('phishing')">Phishing Email Check</button>
+    <button onclick="showSection('malware')">Malware Signature Check</button>
+    <button onclick="showSection('ransomware')">Ransomware Mitigation Strategy</button>
+    <button onclick="showSection('ttp')">Identify TTPs</button>
+
+    <!-- Phishing Email Check Form -->
+    <div id="phishing" class="form-section">
+        <h2>Phishing Email Check</h2>
+        <form action="/phishing_check" method="POST">
+            <label for="email_data">Paste Email:</label><br>
+            <textarea name="email_data" rows="5" cols="50"></textarea><br>
+            <button type="submit">Check Phishing Email</button>
+        </form>
+        <button onclick="fetchLiveThreats('phishing')">Get Live Phishing Threats</button>
+        <div id="live_phishing_threats"></div>
+    </div>
+
+    <!-- Malware Signature Check Form -->
+    <div id="malware" class="form-section">
+        <h2>Malware Signature Check</h2>
+        <form action="/malware_signature" method="POST">
+            <label for="malware_data">Paste Malware Signature:</label><br>
+            <textarea name="malware_data" rows="5" cols="50"></textarea><br>
+            <button type="submit">Check Malware Signature</button>
+        </form>
+        <button onclick="fetchLiveThreats('malware')">Get Live Malware Threats</button>
+        <div id="live_malware_threats"></div>
+    </div>
+
+    <!-- Ransomware Mitigation Form -->
+    <div id="ransomware" class="form-section">
+        <h2>Ransomware Mitigation Strategy</h2>
+        <form action="/ransomware_mitigation" method="POST">
+            <label for="ransomware_data">Describe Ransomware:</label><br>
+            <textarea name="ransomware_data" rows="5" cols="50"></textarea><br>
+            <button type="submit">Get Mitigation Strategy</button>
+        </form>
+        <button onclick="fetchLiveThreats('ransomware')">Get Live Ransomware Threats</button>
+        <div id="live_ransomware_threats"></div>
+    </div>
+
+    <!-- TTPs Form -->
+    <div id="ttp" class="form-section">
+        <h2>Identify TTPs</h2>
+        <form action="/identify_ttps" method="POST">
+            <label for="attack_data">Paste Attack Sequence:</label><br>
+            <textarea name="attack_data" rows="5" cols="50"></textarea><br>
+            <button type="submit">Identify TTPs</button>
+        </form>
+        <button onclick="fetchLiveThreats('ttp')">Get Live TTP Threats</button>
+        <div id="live_ttp_threats"></div>
+    </div>
+
+    <script>
+        function fetchLiveThreats(type) {
+            fetch(`/live_threats/${type}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById(`live_${type}_threats`).innerHTML = JSON.stringify(data, null, 2);
+                });
+        }
+    </script>
+
+    <footer>
+        <p style="color: #000;">&copy; 2024 Cyber Threat Intelligence. All rights reserved. Developed by Adil</p>
+    </footer>
+</body>
+</html>
